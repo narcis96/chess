@@ -6,12 +6,12 @@ WIDTH = 874
 HEIGHT = 778
 class App:
 	board = cb.chessBoard()
-	t = 0
-	itemClicked = False
-	comOp = False
-	colors = ['White','Black']
 	missingPiecesBlack = []
+	itemClicked = False
+	colors = ['White','Black']
 	missingPiecesWhite = []
+	t = 0
+	comOp = False
 	
 	def __init__(self,master):
 		self.Master=master
@@ -39,13 +39,13 @@ class App:
 	def displayBoard(self):
 		for i in range(8):
 			for j in range(8):
-				lW = 10 + 96*i
 				lH = 10 + 96*j
+				lW = 10 + 96*i
 				self.canvas.create_image(lW,lH,image=self.emptySpaces[(i+j)%2],anchor=NW,activeimage = self.emptySpaces[2])
 		for r in range(8):
 			for c in range(8):
-				lH = 10 + 96*r
 				lW = 10 + 96*c
+				lH = 10 + 96*r
 				if self.board.grid[r][c] != 0:
 					self.canvas.create_image(lW,lH,image=self.pieces[self.board.grid[r][c]],anchor=NW,activeimage = self.activePieces[self.board.grid[r][c]])
 		for k in range(12):
@@ -58,7 +58,13 @@ class App:
 			lH = 394 + 96*n
 			self.canvas.create_image(HEIGHT + 1,lH,image=self.pieces[self.missingPiecesWhite[n]],anchor=NW)
 		self.Master.update()
-		
+	
+		def callback(self,event):
+			#to do
+			self.Master.update()
+
 if __name__ == '__main__':		
 	root = tk.Tk()
 	app = App(root)
+	app.canvas.bind("<Button-1>", app.callback)
+	root.mainloop()
