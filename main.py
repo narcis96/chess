@@ -16,18 +16,18 @@ class App:
 	
 	def __init__(self,master):
 		self.Master=master
-		master.title("Chess")
+		master.title("Sah")
 		self.canvas = Canvas(self.Master)
 		self.pieces = [tk.PhotoImage(file = RESURSE + 'SquareWhite.gif'),tk.PhotoImage(file=RESURSE +'PawnBlack.gif'),tk.PhotoImage(file=RESURSE+'KnightBlack.gif'),tk.PhotoImage(file=RESURSE+'BishopBlack.gif'), tk.PhotoImage(file=RESURSE+'RookBlack.gif'),tk.PhotoImage(file=RESURSE+'QueenBlack.gif'),tk.PhotoImage(file=RESURSE+'KingBlack.gif'),tk.PhotoImage(file=RESURSE+'PawnWhite.gif'), tk.PhotoImage(file=RESURSE+'KnightWhite.gif'),tk.PhotoImage(file=RESURSE+'BishopWhite.gif'),tk.PhotoImage(file=RESURSE+'RookWhite.gif'),tk.PhotoImage(file=RESURSE+'QueenWhite.gif'), tk.PhotoImage(file=RESURSE+'KingWhite.gif')]
 		self.activePieces = [tk.PhotoImage(file=RESURSE+'SquareWhite.gif'),tk.PhotoImage(file=RESURSE+'PawnBlackAct.gif'),tk.PhotoImage(file=RESURSE+'KnightBlackAct.gif'), tk.PhotoImage(file=RESURSE+'BishopBlackAct.gif'), tk.PhotoImage(file=RESURSE+'RookBlackAct.gif'),tk.PhotoImage(file=RESURSE+'QueenBlackAct.gif'),tk.PhotoImage(file=RESURSE+'KingBlackAct.gif'), tk.PhotoImage(file=RESURSE+'PawnWhiteAct.gif'), tk.PhotoImage(file=RESURSE+'KnightWhiteAct.gif'),tk.PhotoImage(file=RESURSE+'BishopWhiteAct.gif'),tk.PhotoImage(file=RESURSE+'RookWhiteAct.gif'), tk.PhotoImage(file=RESURSE+'QueenWhiteAct.gif'), tk.PhotoImage(file=RESURSE+'KingWhiteAct.gif')]
 		self.emptySpaces = [tk.PhotoImage(file=RESURSE+'SquareWhite.gif'),tk.PhotoImage(file=RESURSE+'SquareGrey.gif'),tk.PhotoImage(file=RESURSE+'SquareActive.gif'), tk.PhotoImage(file=RESURSE+'SquareClicked.gif')]
 		self.frame = Frame(master); self.frame.grid()
-		self.play = Label(self.frame, text = "Single player (against computer) or two players?")
+		self.play = Label(self.frame, text = "Impotriva botului sau doi jucatori?")
 		self.play.grid(row=0, column =0, columnspan = 6)
-		self.YesButton = Button(self.frame, text = "Single Player", command = self.Yes)
+		self.YesButton = Button(self.frame, text = "Impotriva botului", command = self.Yes)
 		root.bind('<Return>', (lambda e, YesButton=self.YesButton: self.YesButton.invoke()))
 		self.YesButton.grid(row=1,column=0)
-		self.NoButton = Button(self.frame, text='Two Players', command=self.No)
+		self.NoButton = Button(self.frame, text='Doi jucatori', command=self.No)
 		self.NoButton.grid(row=1,column =1)
 		
 	def Yes(self):
