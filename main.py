@@ -1,5 +1,5 @@
-import Tkinter as tk
-from Tkinter import *
+import tkinter as tk
+from tkinter import *
 import chessBoard as cb
 import player as com
 WIDTH = 874
@@ -82,6 +82,7 @@ class App:
 						self.canvas.create_image(lW,lH,image=self.pieces[self.board.grid[r][c]],anchor=NW)
 						self.itemClicked = True
 						self.curPos = [r,c]
+						print (r, c)
 		else:
 			for r in range(len(self.board.grid)):
 				for c in range(len(self.board.grid[r])):
@@ -92,11 +93,15 @@ class App:
 							self.canvas.create_image(lW,lH,image=self.emptySpaces[(r+c)%2],anchor=NW)
 							self.canvas.create_image(lW,lH,image=self.pieces[self.board.grid[r][c]],anchor=NW,activeimage = self.activePieces[self.board.grid[r][c]])
 							self.itemClicked = False
+							print (r, c, 'fail')
 						else:
 							self.finPos = [r,c]
 							if self.board.turnValid(self.board.grid,self.curPos,self.finPos,color):
 								self.itemClicked = False
 								self.t += 1
+								print (r, c)
+								move = self.grid_to_uci(self.curPos, self.finPos)
+								self.computer.user_move(move)
 								#Add to missing pieces list ---------------------------------------------------
 								if self.board.grid[self.finPos[0]][self.finPos[1]]%6 > 1 and color == 'White':
 									self.missingPiecesBlack.append(self.board.grid[self.finPos[0]][self.finPos[1]])
@@ -122,7 +127,12 @@ class App:
 								self.displayBoard()
 							if self.comOp == True and self.t%2 == 1:
 								color = self.colors[self.t%2]
-								choice = self.computer.makeMove(self.board,color)
+#								choice = self.computer.makeMove(self.board,color)
+#								print(choice[1],choice[2],choice[3])
+								move = self.computer.computer_move() 
+								choice = self.uci_to_grid(str(move))
+								choice = [[]] + choice
+								print (choice[1], choice[2])
 								#Add to missing pieces list ---------------------------------------------------
 								if self.board.grid[choice[2][0]][choice[2][1]]%6 > 1 and color == 'Black':
 									self.missingPiecesWhite.append(self.board.grid[choice[2][0]][choice[2][1]])
@@ -151,6 +161,17 @@ class App:
 								self.canvas.delete(ALL)
 								self.displayBoard()
 			self.Master.update()
+	def uci_to_grid(self, move):
+		move_from = [8 - (ord(move[1]) - ord('0')), ord(move[0]) - 97]
+		move_to = [8 - (ord(move[3]) - ord('0')), ord(move[2]) - 97]
+		return [move_from, move_to]
+	def grid_to_uci(self, move_from, move_to):
+		move = []
+		move.append(chr(move_from[1]+97))
+		move.append(chr(8-move_from[0]+ord('0')))
+		move.append(chr(move_to[1]+97))
+		move.append(chr(8-move_to[0]+ord('0')))
+		return ''.join(move)
 
 if __name__ == '__main__':		
 	root = tk.Tk()

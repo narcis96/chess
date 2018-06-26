@@ -2,8 +2,75 @@ import math
 import chessBoard as cb
 from random import choice
 import copy
+import chess
 
 class player:
+
+	def __init__(self):
+		self.gameBoard = chess.Board()
+
+	def alphabeta(self, board, depth, alpha, beta, maximize):
+		if board.is_checkmate():
+			return -40 if maximize else 40
+		elif board.is_game_over():
+			return 0
+
+		if depth == 0:
+			return self.boardValue(board)
+
+		if maximize:
+			bestValue = float("-inf")
+			for move in board.legal_moves:
+				experimentBoard = board.copy()
+				experimentBoard.push(move)
+				value = self.alphabeta(experimentBoard, depth, alpha, beta, False)
+				bestValue = max(bestValue, value)
+				alpha = max(alpha, bestValue)
+				if alpha >= beta:
+					break
+			return bestValue
+		else:
+			bestValue = float("inf")
+			for move in board.legal_moves:
+				experimentBoard = board.copy()
+				experimentBoard.push(move)
+				value = self.alphabeta(experimentBoard, depth - 1, alpha, beta, True)
+				bestValue = min(bestValue, value)
+				beta = min(beta, bestValue)
+				if alpha >= beta:
+					break
+			return bestValue
+
+		return 0
+
+	def boardValue(self, board):
+		boardString = board.fen().split()[0]
+		pawnDiff = boardString.count("P") - boardString.count("p")
+		rookDiff = boardString.count("R") - boardString.count("r")
+		knightDiff = boardString.count("N") - boardString.count("n")
+		bishopDiff = boardString.count("B") - boardString.count("b")
+		queenDiff = boardString.count("Q") - boardString.count("q")
+
+		return 1*pawnDiff + 3*bishopDiff + 3*knightDiff + 5*rookDiff + 9*queenDiff
+
+	def user_move(self, userMove):
+		print('user : ',userMove)
+		self.gameBoard.push(chess.Move.from_uci(userMove))
+
+	def computer_move(self):
+		minValue = float("inf")
+		minMove = None
+		for move in self.gameBoard.legal_moves:
+			experimentBoard = self.gameBoard.copy()
+			experimentBoard.push(move)
+			value = self.alphabeta(experimentBoard,  2, float("-inf"), float("inf"), False)
+
+			if value < minValue:
+				minValue = value
+				minMove = move
+		print('computer : ',str(minMove))
+		self.gameBoard.push(minMove)
+		return minMove
 
 	def simulateTurn(self,temp,color,guiBoard):
 		if color == "Black":

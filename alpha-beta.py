@@ -49,18 +49,21 @@ if __name__ == "__main__":
 
     while True:
 
-        print gameBoard
-        print gameBoard.legal_moves
-        userMove = raw_input("Enter the move you want to make: ")
-        gameBoard.push_san(userMove)
+        print (gameBoard)
+        #print (gameBoard.legal_moves)
+        userMove = chess.Move.from_uci(input("Enter the move you want to make: "))
+        if userMove not in gameBoard.legal_moves:
+            print ('Illegal move')
+            break
+        gameBoard.push(userMove)
 
         if gameBoard.is_checkmate():
-            print gameBoard
-            print "User wins!"
+            print (gameBoard)
+            print ("User wins!")
             break
         elif gameBoard.is_game_over():
-            print gameBoard
-            print "Tie game"
+            print (gameBoard)
+            print ("Tie game")
             break
 
         minValue = float("inf")
@@ -68,18 +71,18 @@ if __name__ == "__main__":
         for move in gameBoard.legal_moves:
             experimentBoard = gameBoard.copy()
             experimentBoard.push(move)
-            value = alphabeta(experimentBoard, 2, float("-inf"), float("inf"), False)
+            value = alphabeta(experimentBoard,  2, float("-inf"), float("inf"), False)
 
             if value < minValue:
                 minValue = value
                 minMove = move
-
+        print (str(minMove))
         gameBoard.push(minMove)
         if gameBoard.is_checkmate():
-            print gameBoard
-            print "Computer wins"
+            print (gameBoard)
+            print ("Computer wins")
             break
         elif gameBoard.is_game_over():
-            print gameBoard
-            print "Tie game"
+            print (gameBoard)
+            print ("Tie game")
             break
