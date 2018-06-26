@@ -22,6 +22,10 @@ class NeuralNetwork:
     def __transfer(self, activation):
         return 2.0 / (1.0 + exp(-2.0*activation)) - 1
 
+    def predict(self, row):
+        outputs = self.__forward_propagate(row)
+        return outputs
+
     def __forward_propagate(self, row):
         inputs = row
         for layer in self.__network:
@@ -36,9 +40,15 @@ class NeuralNetwork:
             string += str(layer) + '\n'
         return string
 
-    def predict(self, row):
-        outputs = self.__forward_propagate(row)
-        return outputs
+    def predict2(self, board):
+        boardString = board.fen().split()[0]
+        pawnDiff = boardString.count("P")-boardString.count("p")
+        rookDiff = boardString.count("R")-boardString.count("r")
+        knightDiff = boardString.count("N")-boardString.count("n")
+        bishopDiff = boardString.count("B")-boardString.count("b")
+        queenDiff = boardString.count("Q")-boardString.count("q")
+        return 1*pawnDiff + 3*bishopDiff + 3*knightDiff + 5*rookDiff + 9*queenDiff
+
 
 class Player:
     def __init__(self, neuralNetwork, size, values):

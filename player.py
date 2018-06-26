@@ -3,7 +3,7 @@ import chessBoard as cb
 from random import choice
 import copy
 import chess
-
+from Neural_Network import NeuralNetwork
 class player:
 
 	def __init__(self):
@@ -44,26 +44,24 @@ class player:
 		return 0
 
 	def boardValue(self, board):
-		boardString = board.fen().split()[0]
-		pawnDiff = boardString.count("P") - boardString.count("p")
-		rookDiff = boardString.count("R") - boardString.count("r")
-		knightDiff = boardString.count("N") - boardString.count("n")
-		bishopDiff = boardString.count("B") - boardString.count("b")
-		queenDiff = boardString.count("Q") - boardString.count("q")
-
-		return 1*pawnDiff + 3*bishopDiff + 3*knightDiff + 5*rookDiff + 9*queenDiff
+		
+		layers = [[]]
+		nn = NeuralNetwork(layers)
+		row = []
+		result = nn.predict(row)
+		return nn.predict2(board)
 
 	def user_move(self, userMove):
 		print('user : ',userMove)
 		self.gameBoard.push(chess.Move.from_uci(userMove))
 
-	def computer_move(self):
+	def makeMove2(self):
 		minValue = float("inf")
 		minMove = None
 		for move in self.gameBoard.legal_moves:
 			experimentBoard = self.gameBoard.copy()
 			experimentBoard.push(move)
-			value = self.alphabeta(experimentBoard,  2, float("-inf"), float("inf"), False)
+			value = self.alphabeta(experimentBoard,  3, float("-inf"), float("inf"), False)
 
 			if value < minValue:
 				minValue = value

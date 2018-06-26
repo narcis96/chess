@@ -127,11 +127,11 @@ class App:
 								self.displayBoard()
 							if self.comOp == True and self.t%2 == 1:
 								color = self.colors[self.t%2]
-#								choice = self.computer.makeMove(self.board,color)
-#								print(choice[1],choice[2],choice[3])
-								move = self.computer.computer_move() 
-								choice = self.uci_to_grid(str(move))
-								choice = [[]] + choice
+								choice = self.computer.makeMove(self.board,color)
+								print(choice[1],choice[2],choice[3])
+#								move = self.computer.computer_move() 
+#								choice = self.uci_to_grid(str(move))
+#								choice = [[]] + choice
 								print (choice[1], choice[2])
 								#Add to missing pieces list ---------------------------------------------------
 								if self.board.grid[choice[2][0]][choice[2][1]]%6 > 1 and color == 'Black':
