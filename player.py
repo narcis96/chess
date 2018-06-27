@@ -62,6 +62,7 @@ class player:
 		row.append(boardString.count("Q"))
 		row.append(boardString.count("q"))
 		row.append(board.turn)
+		
 		return row
 
 	def user_move(self, userMove):
